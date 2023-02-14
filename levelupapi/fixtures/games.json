@@ -1,0 +1,26 @@
+[
+  {
+    "model": "levelupapi.game",
+    "pk": 1,
+    "fields": {
+      "name": "Halo",
+      "game_type": 3,
+      "gamer": 1,
+      "maker": "Bungie",
+      "number_of_players": "1-4",
+      "skill_level": "Medium"
+    }
+  },
+  {
+    "model": "levelupapi.game",
+    "pk": 2,
+    "fields": {
+      "name": "Caves and Chimeras",
+      "game_type": 2,
+      "gamer": 1,
+      "maker": "Hasbro",
+      "number_of_players": 6,
+      "skill_level": "Hard"
+    }
+  }
+]

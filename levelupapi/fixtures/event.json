@@ -1,0 +1,26 @@
+[
+  {
+    "model": "levelupapi.event",
+    "pk": 1,
+    "fields": {
+      "organizer": 1,
+      "name": "Halo Lan Party",
+      "location": "Kyle's House",
+      "date": "2023-04-07",
+      "start_time": "19:30",
+      "end_time": "02:00"
+    }
+  },
+  {
+    "model": "levelupapi.event",
+    "pk": 2,
+    "fields": {
+      "organizer": 1,
+      "name": "C&C Night",
+      "location": "Bongo Java in East",
+      "date": "2023-03-12",
+      "start_time": "19:30",
+      "end_time": "22:30"
+    }
+  }
+]
