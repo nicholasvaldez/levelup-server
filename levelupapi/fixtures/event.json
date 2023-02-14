@@ -8,7 +8,9 @@
       "location": "Kyle's House",
       "date": "2023-04-07",
       "start_time": "19:30",
-      "end_time": "02:00"
+      "end_time": "02:00",
+      "game": 1,
+      "description": "Meeting up at Kyle's house for lan party! Text me for address! 281-555-02020"
     }
   },
   {
@@ -20,7 +22,9 @@
       "location": "Bongo Java in East",
       "date": "2023-03-12",
       "start_time": "19:30",
-      "end_time": "22:30"
+      "end_time": "22:30",
+      "game": 2,
+      "description": "Caves & Chimeras, come in costume!! LARP sesh after."
     }
   }
 ]
