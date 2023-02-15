@@ -58,14 +58,47 @@ class EventView(ViewSet):
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        """Handle PUT requests for a event
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+
+        # * get the object we want from the database
+        event = Event.objects.get(pk=pk)
+        # *the next lines are setting the fields on obj to the values coming from the client
+        event.name = request.data["name"]
+        event.location = request.data["location"]
+        event.date = request.data["date"]
+        event.start_time = request.data["start_time"]
+        event.end_time = request.data["end_time"]
+        event.description = request.data["description"]
+
+        game = Game.objects.get(pk=request.data["game"])
+        event.game = game
+        event.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 # The serializer class determines HOW the Python data should be serialized (converted) to be sent back to the client.
+
+
+class EventGameSerializer(serializers.ModelSerializer):
+    """JSON serializer for games
+    """
+    class Meta:
+        model = Game
+        fields = ('id', 'name')
 
 
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for games
     """
+    game = EventGameSerializer(serializers.ModelSerializer)
+
     class Meta:  # holds the configuration for the serializer
         model = Event  # tell the serializer to use the game model
         # and to include id and the label fields
         fields = ('id', 'organizer', 'name', 'location',
-                  'date', 'start_time', 'end_time')
+                  'date', 'start_time', 'end_time', 'description', 'game',)
