@@ -4,6 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from levelupapi.models import Event, Gamer, Game
+from rest_framework.decorators import action
 
 
 class EventView(ViewSet):
@@ -86,6 +87,26 @@ class EventView(ViewSet):
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+    # ? For this action, you want a client to make a request to allow a gamer to sign up for an event.
+    # * Using the action decorator turns a method into a new route. In this case, the action will accept POST methods and because detail=True the url will include the pk. Since we need to know which event the user wants to sign up for we’ll need to have the pk. The route is named after the function. So to call this method the url would be http://localhost:8000/events/2/signup
+    @action(methods=['post'], detail=True)
+    def signup(self, request, pk):
+        """Post request for a user to sign up for an event"""
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.add(gamer)
+        return Response({'message': 'Gamer added'}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['delete'], detail=True)
+    def leave(self, request, pk):
+        """Post request for a user to sign up for an event"""
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendees.remove(gamer)
+        return Response({'message': 'Gamer removed'}, status=status.HTTP_201_CREATED)
+
 # The serializer class determines HOW the Python data should be serialized (converted) to be sent back to the client.
 
 
@@ -105,5 +126,5 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:  # holds the configuration for the serializer
         model = Event  # tell the serializer to use the game model
         # and to include id and the label fields
-        fields = ('id', 'organizer', 'name', 'location',
+        fields = ('id', 'organizer', 'name', 'location'
                   'date', 'start_time', 'end_time', 'description', 'game',)
