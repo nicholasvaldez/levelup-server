@@ -13,3 +13,5 @@ class Event(models.Model):
         'Game', on_delete=models.CASCADE, related_name='games'
     )
     description = models.CharField(max_length=250)
+    attendees = models.ManyToManyField(
+        "Gamer", through="attendance", related_name="attendees")
