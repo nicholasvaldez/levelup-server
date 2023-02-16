@@ -35,10 +35,16 @@ class EventView(ViewSet):
             Response -- JSON serialized list of events
         """
         # ORM method .all() gets the whole collection of objects from database
-        event = Event.objects.all()
+        gamer = Gamer.objects.get(user=request.auth.user)
+        events = []
+        events = Event.objects.all()
+        # Set the `joined` property on every event
+        for event in events:
+            # Check to see if the gamer is in the attendees list on the event
+            event.joined = gamer in event.attendees.all()
 
         # sets serialized (converts data into a JSON string) data to variable, many=true  because the response is a tuple/list
-        serializer = EventSerializer(event, many=True)
+        serializer = EventSerializer(events, many=True)
         # pass variable to the response as the body
         return Response(serializer.data)
 
@@ -126,5 +132,6 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:  # holds the configuration for the serializer
         model = Event  # tell the serializer to use the game model
         # and to include id and the label fields
-        fields = ('id', 'organizer', 'name', 'location'
-                  'date', 'start_time', 'end_time', 'description', 'game',)
+        fields = ('id', 'game', 'organizer',
+                  'description', 'date', 'start_time', 'end_time', 'attendees',
+                  'joined')
