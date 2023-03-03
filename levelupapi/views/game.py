@@ -19,15 +19,20 @@ class GameView(ViewSet):
 
         Returns:
             Response -- JSON serialized games
+
         """
-        # * ORM gets single game from database base on primary key in the url
-        game = Game.objects.get(pk=pk)
+        try:
+            # * ORM gets single game from database base on primary key in the url
+            game = Game.objects.get(pk=pk)
 
-        # * sets serialized (converts data into a JSON string) data to variable
-        serializer = GameSerializer(game)
+            # * sets serialized (converts data into a JSON string) data to variable
+            serializer = GameSerializer(game)
 
-        # * pass variable to the response as the body
-        return Response(serializer.data)
+            # * pass variable to the response as the body
+            return Response(serializer.data)
+        except Game.DoesNotExist as ex:
+
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
         """Handle GET requests to get all games
@@ -67,7 +72,7 @@ class GameView(ViewSet):
             game_type=game_type,
         )
         serializer = GameSerializer(game)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a game
@@ -83,7 +88,6 @@ class GameView(ViewSet):
         game.maker = request.data["maker"]
         game.number_of_players = request.data["number_of_players"]
         game.skill_level = request.data["skill_level"]
-
         game_type = GameType.objects.get(pk=request.data["game_type"])
         game.game_type = game_type
         game.save()
