@@ -68,7 +68,7 @@ class EventView(ViewSet):
             description=request.data["description"]
         )
         serializer = EventSerializer(event)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a event
